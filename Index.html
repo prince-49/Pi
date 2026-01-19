@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>SafeZone Watch – Test Payment</title>
+
+  <!-- Pi SDK -->
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+</head>
+
+<body style="font-family: Arial; text-align: center; margin-top: 60px;">
+
+  <h1>SafeZone Watch</h1>
+  <p>Pi SDK Test Transaction</p>
+
+  <button id="payBtn" style="font-size:18px;padding:12px 20px;">
+    Test Pi Payment
+  </button>
+
+  <script>
+    Pi.init({ version: "2.0", sandbox: true });
+
+    document.getElementById("payBtn").onclick = function () {
+      Pi.createPayment({
+        amount: 0.01,
+        memo: "SafeZone Watch test transaction",
+        metadata: { app: "safezonewatch" }
+      }, {
+        onReadyForServerApproval: function (paymentId) {
+          console.log("Ready for approval:", paymentId);
+        },
+        onReadyForServerCompletion: function (paymentId, txid) {
+          console.log("Completed:", paymentId, txid);
+        },
+        onCancel: function (paymentId) {
+          console.log("Cancelled:", paymentId);
+        },
+        onError: function (error) {
+          console.error(error);
+        }
+      });
+    };
+  </script>
+
+</body>
+</html>
